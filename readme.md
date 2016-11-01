@@ -1,8 +1,37 @@
-# Choose Your Own Adventure
+# Cross Class Repo
+This repo is designed to allow cross class collaboration. Each discipline has a folder
+`server` for backend and `client` for the frontend.
 
-## Background
-Web applications are composed of front ends and back ends. The back end is primarily concerned with the data for your application - how to validate it, store it, retrieve it, and eventually compose it for use in the front end. The front end is primarily concerned with displaying data and allowing the user to interact with the data through the user interface (UI). In this assignment front end and back end engineering students will have to work together (in pairs) to create one complete application.
+### Frontenders
 
-This assignment will require each team to coordinate (negotiate) the communication between the front end and back end through a data API. What endpoints (URLs) will be available to the front end? What data will the back end require to perform its work? What format will the back end return the data in? These and more questions will need to be discussed within each team.
+All of your work will be confined to the `client` folder, your package.json should be inside this folder.
 
-The objective is to create a system for creating a choose your own adventure story. In a choose your own adventure, each step of the story allows the user to select which path to go down to continue the story. For example, I might read a portion of the story that tells about the heroine going to a castle and my choice would be to have her scale the wall or knock on the front door. That decision would lead to two different story paths. We will be creating the system for creating a new story (EPIC Mode involves actually allowing someone to read the story and choose their own path).
+Any HTML, CSS, Images that are inside of `client/public` will be served by the ruby app.
+
+```
+- client/
+  - public/
+    - css/
+      - app.css
+```
+The respective link tag for the above folder structure would be
+
+```html
+<link rel='stylesheet' href='/css/app.css'>
+```
+
+### Backenders
+
+Most of your work will be constrained to the `server` folder save for your Gemfile. This is for the easy of deployment to heroku (if we get there)
+
+# New Things
+  1. Database config is located at
+  2. Migrations via `rake db:migrate`
+  3. Torch db via `rake db:drop`
+
+## Deploying to heroku
+
+1. Ensure you have heroku toolbelt
+2. Run `heroku create`
+3. Run `heroku addons:create heroku-postgresql:hobby-dev` to add a postgres DB server
+3. Run `heroku run "cd server; rake db:migrate"` to migrate your servers database
