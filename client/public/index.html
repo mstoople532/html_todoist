@@ -4,114 +4,48 @@
         <meta charset='utf-8'>
         <title>Choose Your Own Adventure</title>
 
-        <link rel='stylesheet' href='css/main.css'>
+        <link href='css/main.css' rel='stylesheet' type='text/css'>
     </head>
     <body>
+
+        <header>
+            <h1>[APP NAME HERE]</h1>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a class='show-???-list' href='#'>Show List of [WHAT?]</a></li>
+                <!-- what other nav do we need? -->
+                <!-- how can we make a specific section below visible? HINT: look at the _nav.scss file! -->
+            </ul>
+        </nav>
+
         <main>
+            <section class='list-of-???'>
+                <h2>List of [WHAT?]</h2>
+                <ul></ul>
+            </section>
 
-            <header>Choose Your Own Adventure!</header>
+            <!-- what other sections do we need? -->
 
-            <section id='login'>
-                <p>Please log in before creating your story.</p>
+            <section class='create-a-???'>
+                <h2>Create a New [WHAT?]</h2>
                 <form>
-                    <input type='submit' value='Login'>
+                    <aside>
+                        <label for='new-name'>Name</label>
+                        <input type='text' id='name' name='name' required>
+                    </aside>
+
+                    <!-- What else do we need? -->
+
+                    <aside>
+                        <input type='submit' value='Create [WHAT?]'>
+                    </aside>
                 </form>
-            </section>
-
-            <nav>
-                <ul>
-                    <li><a class='list-stories' href='#'>List Stories</a></li>
-                    <li><a class='create-story' href='#'>Create Story</a></li>
-                </ul>
-            </nav>
-
-            <section id='story-list'>
-                <ul>
-                    <!-- example item
-                    <li>
-                        My New Story [<a href='#...storyId...' class='edit-story'>edit</a>]
-                    </li>
-                    -->
-                </ul>
-            </section>
-
-            <section id='create-story'>
-                <h2>Create a New Story!</h2>
-                <form>
-                    <label for='new-story-name'>Story Name</label>
-                    <input type='text' id='new-story-name'>
-                </form>
-            </section>
-
-            <section id='edit-story'>
-                <h2>Editing Story: <span class='story-name'></span></h2>
-
-                <form class='create-story-step'>
-                    <input type='hidden' class='story-id' value=''>
-                    <h3>New Step</h3>
-                    <fieldset>
-                        <h4>Step Text</h4>
-                        <textarea id='new-step-text'></textarea>
-                    </fieldset>
-                    <fieldset>
-                        <div>
-                            <label for='new-step-option-a'>Option A</label>
-                            <input type='text' id='new-step-option-a'>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div>
-                            <label for='new-step-option-b'>Option B</label>
-                            <input type='text' id='new-step-option-b'>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <input type='submit' value='Create'>
-                    </fieldset>
-                </form>
-
-                <h3>Current Steps</h3>
-                <ul>
-                    <!-- example step
-                    <li>
-                        <h4>Step ID: <span class='step-id'></span></h4>
-                        <form class='edit-story-step'>
-                            <input type='hidden' class='story-id' value=''>
-                            <fieldset>
-                                <h4>Step Text</h4>
-                                <textarea class='new-step-text'></textarea>
-                            </fieldset>
-                            <fieldset>
-                                <div>
-                                    <label for='new-step-option-a'>Option A Text</label>
-                                    <input type='text' class='new-step-option-a'>
-                                </div>
-                                <div>
-                                    <label for='new-step-option-a'>Option A Next Step</label>
-                                    <input type='text' class='new-step-option-a-next'>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <div>
-                                    <label for='new-step-option-b'>Option B</label>
-                                    <input type='text' class='new-step-option-b'>
-                                </div>
-                                <div>
-                                    <label for='new-step-option-b'>Option B Next Step</label>
-                                    <input type='text' class='new-step-option-b-next'>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <input type='submit' value='Update'>
-                            </fieldset>
-                        </form>
-                    </li>
-                    -->
-                </ul>
             </section>
 
         </main>
 
-        <script src='js/app.js'></script>
+
     </body>
 </html>
