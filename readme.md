@@ -20,6 +20,18 @@ The respective link tag for the above folder structure would be
 <link rel='stylesheet' href='/css/app.css'>
 ```
 
+## Setup
+
+### Once
+1. Clone the repo
+
+### First and whenever your backender ask you to.
+1. bundler
+1. rake db:migrate
+
+### Start the server
+1. rackup
+
 ### Backenders
 
 Most of your work will be constrained to the `server` folder save for your Gemfile. This is for the easy of deployment to heroku (if we get there)
