@@ -29,7 +29,7 @@ The respective link tag for the above folder structure would be
 1. bundler
 1. rake db:migrate
 
-### Start the server
+### Start the server (from root)
 1. rackup
 
 ### Backenders
