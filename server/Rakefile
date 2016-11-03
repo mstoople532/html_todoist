@@ -25,7 +25,7 @@ namespace :generate do
 
     File.open file, "w" do |f|
       f.puts %(
-class #{name}Migration < ActiveRecord::Migration
+class #{name}Migration < ActiveRecord::Migration[5.0]
   def change
   end
 end).strip
