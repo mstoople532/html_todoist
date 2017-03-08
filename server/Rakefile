@@ -3,9 +3,9 @@ require "active_record"
 
 class String
   def snake_case
-    self.gsub(/::/, '/').
-      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-      gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    self.gsub(/::/, "/").
+      gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2').
+      gsub(/([a-z\d])([A-Z])/, '\1_\2').
       tr("-", "_").
       downcase
   end
@@ -41,15 +41,15 @@ end
 
 def import_active_record_tasks(default_rake_app)
   Rake.application = Rake::Application.new
-  Rake.application.rake_require('active_record/railties/databases')
+  Rake.application.rake_require("active_record/railties/databases")
 
   # Customize AR database tasks
 
   include ActiveRecord::Tasks
 
-  db_dir                               = File.expand_path('../db', __FILE__)
-  db_config_path                       = db_dir + '/database.yml'
-  migrations_path                      = db_dir + '/migrations'
+  db_dir                               = File.expand_path("../db", __FILE__)
+  db_config_path                       = db_dir + "/database.yml"
+  migrations_path                      = db_dir + "/migrations"
 
   # WARNING! This MUST be a String not a Symbol
   puts ENV["RACK_ENV"]
@@ -69,10 +69,10 @@ def import_active_record_tasks(default_rake_app)
     ActiveRecord::Base.establish_connection(DatabaseTasks.env.to_sym)
   end
 
-  tasks_to_import = %w[db:create db:drop db:purge db:rollback db:migrate
-    db:migrate:up db:migrate:down db:migrate:status db:version db:schema:load]
+  tasks_to_import = %w(db:create db:drop db:purge db:rollback db:migrate
+                       db:migrate:up db:migrate:down db:migrate:status db:version db:schema:load)
 
-  imported_tasks   = Rake.application.tasks.select do |task|
+  imported_tasks = Rake.application.tasks.select do |task|
     tasks_to_import.include?(task.name)
   end
 

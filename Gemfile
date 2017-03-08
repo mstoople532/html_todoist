@@ -1,15 +1,16 @@
 source "https://rubygems.org"
 
-gem "sinatra"
 gem "activerecord"
-gem "rake"
 gem "puma" # Replacement for WEBrick
-gem "rerun" # Will reload sinatra if .rb files change. 
+gem "rack", ""
+gem "rake"
+gem "rerun" # Will reload sinatra if .rb files change.
+gem "sinatra"
 gem "sqlite3"
 
 group :test do
-  gem "pry"
   gem "minitest"
   gem "minitest-focus"
+  gem "pry"
   gem "rack-test"
 end
