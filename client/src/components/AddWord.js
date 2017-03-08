@@ -6,7 +6,7 @@ export default class AddWord extends React.Component {
 
   state = {
     origin_phrase: "",
-    foreign_language: "",
+    foreign_language: this.props.languages[0].id,
     foreign_phrase: ""
   }
 
@@ -15,9 +15,9 @@ export default class AddWord extends React.Component {
     console.log('this.state', this.state);
     
     this.props.addWord({
-      origin_language: this.props.selectedLang, 
+      origin_language_id: this.props.selectedLang.id, 
       origin_phrase: this.state.origin_phrase, 
-      foreign_language: this.state.foreign_language, 
+      foreign_language_id: this.state.foreign_language, 
       foreign_phrase: this.state.foreign_phrase}
     )
   }

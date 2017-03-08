@@ -1,10 +1,10 @@
 development:
   adapter: sqlite3
-  database: db/dev.sqlite3
+  database: db/development.db
 
 test:
   adapter: sqlite3
-  database: db/test.sqlite3
+  database: db/test.db
 
 # postgres_defaults: &postgres_defaults
 #   encoding: utf8

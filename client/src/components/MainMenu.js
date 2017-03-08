@@ -2,23 +2,25 @@ import React, { Component } from 'react'
 import { Input, Label, Menu } from 'semantic-ui-react'
 
 export default class MenuExampleVertical extends Component {
-  state = { activeItem: 'add_word' }
+  state = { activeItem: this.props.languages[0].name }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => {
+    this.props.changeLang(this.props.languages.filter((el) => el.name === name)[0])
+    this.setState({ activeItem: name })
+  }
 
   render() {
     const { activeItem } = this.state
 
+    const menuItems = this.props.languages.map((lang) =>
+      <Menu.Item key={lang.id} name={lang.name} active={activeItem === lang.name} onClick={this.handleItemClick}>
+          {lang.name}
+        </Menu.Item>
+    );
+
     return (
       <Menu vertical>
-        <Menu.Item name='add_word' active={activeItem === 'add_word'} onClick={this.handleItemClick}>
-          Add Phrase
-        </Menu.Item>
-
-        <Menu.Item name='langs' active={activeItem === 'langs'} onClick={this.handleItemClick}>
-          <Label>51</Label>
-          Languages
-        </Menu.Item>
+       {menuItems}
         
         <Menu.Item>
           <Input icon='search' placeholder='Search mail...' />

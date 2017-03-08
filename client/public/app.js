@@ -25957,10 +25957,6 @@ var _MainMenu = __webpack_require__(421);
 
 var _MainMenu2 = _interopRequireDefault(_MainMenu);
 
-var _Languages = __webpack_require__(420);
-
-var _Languages2 = _interopRequireDefault(_Languages);
-
 var _Words = __webpack_require__(422);
 
 var _Words2 = _interopRequireDefault(_Words);
@@ -25978,24 +25974,71 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
 
-  function App() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function App(props) {
     _classCallCheck(this, App);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      languages: [{ id: 1, name: "German", code: "de" }, { id: 2, name: "Spanish", code: "es" }],
+    _this.state = {
+      languages: [{ id: 0, name: "English", code: "en" }, { id: 1, name: "German", code: "de" }, { id: 2, name: "Spanish", code: "es" }],
       selectedLanguage: { id: 1, name: "German", code: "de" },
-      words: [{ id: 1, origin_language: "en", origin_phrase: "That's Cool", foreign_language: "de", foreign_phrase: 'Dats kuhl' }]
-    }, _this.addWord = function (word) {
-      _this.setState({ words: [].concat(_toConsumableArray(_this.state.words), [word]) });
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+      words: []
+    };
+
+    _this.changeSelectedLanguage = function (language) {
+      _this.setState({ selectedLanguage: language });
+    };
+
+    _this.addWord = function (word) {
+      fetch('/words', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(word)
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        return _this.setState({ words: [].concat(_toConsumableArray(_this.state.words), [res]) });
+      });
+    };
+
+    _this.getWords = function () {
+      var self = _this;
+
+      fetch('/words').then(function (res) {
+        return res.json();
+      }).then(function (words) {
+        self.setState({ words: words });
+      }).catch(function (ex) {
+        console.log('parsing failed', ex);
+      });
+    };
+
+    _this.destroyWord = function (word) {
+      var self = _this;
+
+      fetch('/words/' + word.id, {
+        method: 'delete',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (words) {
+        self.setState({ words: self.state.words.filter(function (el) {
+            return el.id !== word.id;
+          }) });
+        self.getWords();
+      }).catch(function (ex) {
+        console.log('parsing failed', ex);
+      });
+    };
+
+    _this.getWords();
+    return _this;
   }
 
   _createClass(App, [{
@@ -26007,16 +26050,20 @@ var App = function (_React$Component) {
         _react2.default.createElement(
           _semanticUiReact.Header,
           { as: 'h2' },
-          _react2.default.createElement(_semanticUiReact.Icon, { name: 'plug' }),
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'bookmark' }),
           _react2.default.createElement(
             _semanticUiReact.Header.Content,
             null,
             'Decode'
           ),
-          _react2.default.createElement(_MainMenu2.default, { languages: this.state.languages })
+          _react2.default.createElement(_MainMenu2.default, { languages: this.state.languages, changeLang: this.changeSelectedLanguage })
         ),
-        _react2.default.createElement(_Languages2.default, { languages: this.state.languages }),
-        _react2.default.createElement(_Words2.default, { words: this.state.words }),
+        _react2.default.createElement(_Words2.default, { words: this.state.words, destroyWord: this.destroyWord }),
+        _react2.default.createElement(
+          _semanticUiReact.Button,
+          { onClick: this.getWords },
+          ' Refresh Words '
+        ),
         _react2.default.createElement(_AddWord2.default, { languages: this.state.languages, selectedLang: this.state.selectedLanguage, addWord: this.addWord })
       );
     }
@@ -26084,16 +26131,16 @@ var AddWord = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddWord.__proto__ || Object.getPrototypeOf(AddWord)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       origin_phrase: "",
-      foreign_language: "",
+      foreign_language: _this.props.languages[0].id,
       foreign_phrase: ""
     }, _this.handleSubmit = function (e) {
       e.preventDefault();
       console.log('this.state', _this.state);
 
       _this.props.addWord({
-        origin_language: _this.props.selectedLang,
+        origin_language_id: _this.props.selectedLang.id,
         origin_phrase: _this.state.origin_phrase,
-        foreign_language: _this.state.foreign_language,
+        foreign_language_id: _this.state.foreign_language,
         foreign_phrase: _this.state.foreign_phrase });
     }, _this.changeOriginPhrase = function (e) {
       console.log('this.state.origin_phrase', _this.state.origin_phrase);
@@ -26159,68 +26206,7 @@ var AddWord = function (_React$Component) {
 exports.default = AddWord;
 
 /***/ }),
-/* 420 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import { Header, Icon, Container } from 'semantic-ui-react'
-
-
-var App = function (_React$Component) {
-  _inherits(App, _React$Component);
-
-  function App() {
-    _classCallCheck(this, App);
-
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-  }
-
-  _createClass(App, [{
-    key: 'render',
-    value: function render() {
-
-      var listItems = this.props.languages.map(function (lang) {
-        return _react2.default.createElement(
-          'li',
-          { key: lang.id },
-          lang.name
-        );
-      });
-
-      return _react2.default.createElement(
-        'ul',
-        null,
-        listItems
-      );
-    }
-  }]);
-
-  return App;
-}(_react2.default.Component);
-
-exports.default = App;
-
-/***/ }),
+/* 420 */,
 /* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26261,36 +26247,36 @@ var MenuExampleVertical = function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MenuExampleVertical.__proto__ || Object.getPrototypeOf(MenuExampleVertical)).call.apply(_ref, [this].concat(args))), _this), _this.state = { activeItem: 'add_word' }, _this.handleItemClick = function (e, _ref2) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MenuExampleVertical.__proto__ || Object.getPrototypeOf(MenuExampleVertical)).call.apply(_ref, [this].concat(args))), _this), _this.state = { activeItem: _this.props.languages[0].name }, _this.handleItemClick = function (e, _ref2) {
       var name = _ref2.name;
-      return _this.setState({ activeItem: name });
+
+      _this.props.changeLang(_this.props.languages.filter(function (el) {
+        return el.name === name;
+      })[0]);
+      _this.setState({ activeItem: name });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(MenuExampleVertical, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var activeItem = this.state.activeItem;
 
+
+      var menuItems = this.props.languages.map(function (lang) {
+        return _react2.default.createElement(
+          _semanticUiReact.Menu.Item,
+          { key: lang.id, name: lang.name, active: activeItem === lang.name, onClick: _this2.handleItemClick },
+          lang.name
+        );
+      });
 
       return _react2.default.createElement(
         _semanticUiReact.Menu,
         { vertical: true },
-        _react2.default.createElement(
-          _semanticUiReact.Menu.Item,
-          { name: 'add_word', active: activeItem === 'add_word', onClick: this.handleItemClick },
-          'Add Phrase'
-        ),
-        _react2.default.createElement(
-          _semanticUiReact.Menu.Item,
-          { name: 'langs', active: activeItem === 'langs', onClick: this.handleItemClick },
-          _react2.default.createElement(
-            _semanticUiReact.Label,
-            null,
-            '51'
-          ),
-          'Languages'
-        ),
+        menuItems,
         _react2.default.createElement(
           _semanticUiReact.Menu.Item,
           null,
@@ -26322,6 +26308,8 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _semanticUiReact = __webpack_require__(208);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26329,9 +26317,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import { Header, Icon, Container } from 'semantic-ui-react'
-
 
 var Words = function (_React$Component) {
   _inherits(Words, _React$Component);
@@ -26345,13 +26330,24 @@ var Words = function (_React$Component) {
   _createClass(Words, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var listItems = this.props.words.map(function (word) {
         return _react2.default.createElement(
           'li',
           { key: word.id },
           word.origin_phrase,
-          ' -> ',
-          word.foreign_phrase
+          ' in ',
+          word.foreign_language,
+          ' ',
+          word.foreign_phrase,
+          _react2.default.createElement(
+            _semanticUiReact.Button,
+            { negative: true, onClick: function onClick() {
+                return _this2.props.destroyWord(word);
+              } },
+            'X'
+          )
         );
       });
 

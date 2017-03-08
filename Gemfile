@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "activerecord"
 gem "puma" # Replacement for WEBrick
-gem "rack", ""
+gem "rack"
 gem "rake"
 gem "rerun" # Will reload sinatra if .rb files change.
 gem "sinatra"

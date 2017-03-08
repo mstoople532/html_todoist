@@ -2,6 +2,7 @@
 # and in test.
 # DO NOT CHANGE THIS FILE
 require "yaml"
+require "pry"
 require "active_record"
 
 if ENV["DATABASE_URL"]
@@ -14,5 +15,6 @@ else
       )
     )
   )
-  ActiveRecord::Base.establish_connection(db_config[ENV["RACK_ENV"]])
+  
+  ActiveRecord::Base.establish_connection(db_config[ENV["RACK_ENV"] || "development"])
 end
