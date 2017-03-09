@@ -22,4 +22,9 @@ class AppTest < Minitest::Test
     assert_equal 2, JSON.parse(response.body).count
   end
 
+  def test_post_tasks
+    response = post "/tasks", name: "tastycakes", priority: "high"
+    assert response.ok?
+    assert_equal 1, Task.where(name: "tastycakes").count
+  end
 end

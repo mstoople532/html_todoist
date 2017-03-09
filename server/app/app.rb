@@ -20,6 +20,11 @@ class App < Sinatra::Base
   get "/tasks" do
     body Task.all.to_json
   end
+
+  post "/tasks" do
+    body Task.create(name: params["name"], priority: params["priority"], created_at: Time.now, list_id: nil, completed_at: nil).to_json
+  end
+  
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end
