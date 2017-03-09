@@ -43,6 +43,10 @@ class App < Sinatra::Base
     body task.to_json
   end
 
+  get "/lists" do
+    body List.all.to_json
+  end
+
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end

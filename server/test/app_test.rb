@@ -47,4 +47,11 @@ class AppTest < Minitest::Test
       Task.find(tastycakes.id)
     end
   end
+
+  def test_list_lists
+    List.create(name: "Food")
+    List.create(name: "Activities")
+    response = get "/lists"
+    assert_equal 2, JSON.parse(response.body).count
+  end
 end

@@ -20,3 +20,9 @@ begin
 rescue ActiveRecord::StatementInvalid
 end
 CreateTasksTable.migrate(:up)
+
+begin
+  CreateListsTable.migrate(:down)
+rescue ActiveRecord::StatementInvalid
+end
+CreateListsTable.migrate(:up)
