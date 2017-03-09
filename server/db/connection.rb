@@ -15,6 +15,6 @@ else
       )
     )
   )
-  
+
   ActiveRecord::Base.establish_connection(db_config[ENV["RACK_ENV"] || "development"])
 end

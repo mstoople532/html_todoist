@@ -4,37 +4,16 @@ This repo is designed to allow cross class collaboration. Each discipline has a 
 
 ### Frontenders
 
-All of your work will be confined to the `client` folder, your package.json should be inside this folder.
-
-Any HTML, CSS, Images that are inside of `client/public` will be served by the ruby app.
-
-```
-- client/
-  - public/
-    - css/
-      - app.css
-```
-The respective link tag for the above folder structure would be
-
-```html
-<link rel='stylesheet' href='/css/app.css'>
-```
-
 ## Setup
-
-### Once
-1. Clone the repo
 
 ### First and whenever your backender ask you to.
 1. bundler
 1. rake db:migrate
 
-### Start the server (from root)
+### Start the server (from server folder)
 1. rackup
 
 ### Backenders
-
-Most of your work will be constrained to the `server` folder save for your Gemfile. This is for the easy of deployment to heroku (if we get there)
 
 # New Things
   1. Database config is located at

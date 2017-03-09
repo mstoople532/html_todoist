@@ -10,13 +10,5 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170308135304) do
-
-  create_table "words", force: :cascade do |t|
-    t.string "origin_language_id"
-    t.string "origin_phrase"
-    t.string "foreign_language_id"
-    t.string "foreign_phrase"
-  end
-
+ActiveRecord::Schema.define(version: 20_170_308_135_304) do
 end

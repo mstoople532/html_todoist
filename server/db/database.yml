@@ -6,6 +6,7 @@ test:
   adapter: sqlite3
   database: db/test.db
 
+# For Multi-User mode
 # postgres_defaults: &postgres_defaults
 #   encoding: utf8
 #   template: template0

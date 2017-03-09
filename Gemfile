@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "activerecord"
+gem "pry"
 gem "puma" # Replacement for WEBrick
 gem "rack"
 gem "rake"
@@ -11,6 +12,7 @@ gem "sqlite3"
 group :test do
   gem "minitest"
   gem "minitest-focus"
-  gem "pry"
+
   gem "rack-test"
+  gem "webmock"
 end

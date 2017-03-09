@@ -38,7 +38,8 @@ end
 
 # Temporary switch to blank rake app, extract required tasks and import them to
 # current rake task. Skip seed loader here, as we do not need it for tests.
-
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
 def import_active_record_tasks(default_rake_app)
   Rake.application = Rake::Application.new
   Rake.application.rake_require("active_record/railties/databases")
