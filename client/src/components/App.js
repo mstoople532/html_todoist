@@ -1,27 +1,33 @@
 import React from 'react';
-import { Button, Header, Icon, Container } from 'semantic-ui-react'
-import AddWord from './AddWord' 
+import { Button, Header, Icon, Container, Grid } from 'semantic-ui-react'
+
 import MainMenu from './MainMenu' 
 import Words from './Words' 
 
 class App extends React.Component {
   constructor (props) {
     super(props);
+
+    this.state = {
+      languages: [
+        {id: 0, name: "English", code: "en"},
+        {id: 1, name: "German", code: "de"},
+        {id: 2, name: "Spanish", code: "es"}
+      ],
+      words: []
+    };
+    // HACK
+    this.state.selectedLanguage = this.state.languages[0];
+
     this.getWords();
   }
 
-  state = {
-    languages: [
-      {id: 0, name: "English", code: "en"},
-      {id: 1, name: "German", code: "de"},
-      {id: 2, name: "Spanish", code: "es"}
-    ],
-    selectedLanguage: {id: 1, name: "German", code: "de"}, 
-    words: []
-  };
-
   changeSelectedLanguage = (language) => {
     this.setState({selectedLanguage: language});
+  }
+
+  filteredWords = () => {
+    return this.state.words.filter((el) => parseInt(el.origin_language_id) === parseInt(this.state.selectedLanguage.id))
   }
 
   addWord = (word) => {
@@ -38,7 +44,7 @@ class App extends React.Component {
 
   getWords = () => {
     const self = this;
-    
+
     fetch('/words')
       .then(res=>res.json())
       .then(function(words) {
@@ -75,11 +81,24 @@ class App extends React.Component {
           <Header.Content>
             Decode
           </Header.Content>
-          <MainMenu languages={this.state.languages} changeLang={this.changeSelectedLanguage}/>
+          
         </Header>
-        <Words words={this.state.words} destroyWord={this.destroyWord}/>
-        <Button onClick={this.getWords} > Refresh Words </Button>
-        <AddWord languages={this.state.languages} selectedLang={this.state.selectedLanguage} addWord={this.addWord}/>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={4}>
+              <MainMenu languages={this.state.languages} changeLang={this.changeSelectedLanguage}/>
+            </Grid.Column>
+            <Grid.Column width={12}>
+              <Button onClick={this.getWords} > Refresh Words </Button>
+              <Words languages={this.state.languages} selectedLanguage={this.state.selectedLanguage}words={this.filteredWords()} destroyWord={this.destroyWord} addWord={this.addWord}/>
+              
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
+        
+        
+        
       </Container>
   );
   }

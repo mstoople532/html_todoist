@@ -1,4 +1,5 @@
 *.gem
+**/*.db
 *.sqlite3
 *.rbc
 /.config

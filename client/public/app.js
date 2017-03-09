@@ -25949,10 +25949,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(208);
 
-var _AddWord = __webpack_require__(419);
-
-var _AddWord2 = _interopRequireDefault(_AddWord);
-
 var _MainMenu = __webpack_require__(421);
 
 var _MainMenu2 = _interopRequireDefault(_MainMenu);
@@ -25979,14 +25975,14 @@ var App = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-    _this.state = {
-      languages: [{ id: 0, name: "English", code: "en" }, { id: 1, name: "German", code: "de" }, { id: 2, name: "Spanish", code: "es" }],
-      selectedLanguage: { id: 1, name: "German", code: "de" },
-      words: []
-    };
-
     _this.changeSelectedLanguage = function (language) {
       _this.setState({ selectedLanguage: language });
+    };
+
+    _this.filteredWords = function () {
+      return _this.state.words.filter(function (el) {
+        return parseInt(el.origin_language_id) === parseInt(_this.state.selectedLanguage.id);
+      });
     };
 
     _this.addWord = function (word) {
@@ -26037,6 +26033,13 @@ var App = function (_React$Component) {
       });
     };
 
+    _this.state = {
+      languages: [{ id: 0, name: "English", code: "en" }, { id: 1, name: "German", code: "de" }, { id: 2, name: "Spanish", code: "es" }],
+      words: []
+    };
+    // HACK
+    _this.state.selectedLanguage = _this.state.languages[0];
+
     _this.getWords();
     return _this;
   }
@@ -26055,16 +26058,31 @@ var App = function (_React$Component) {
             _semanticUiReact.Header.Content,
             null,
             'Decode'
-          ),
-          _react2.default.createElement(_MainMenu2.default, { languages: this.state.languages, changeLang: this.changeSelectedLanguage })
+          )
         ),
-        _react2.default.createElement(_Words2.default, { words: this.state.words, destroyWord: this.destroyWord }),
         _react2.default.createElement(
-          _semanticUiReact.Button,
-          { onClick: this.getWords },
-          ' Refresh Words '
-        ),
-        _react2.default.createElement(_AddWord2.default, { languages: this.state.languages, selectedLang: this.state.selectedLanguage, addWord: this.addWord })
+          _semanticUiReact.Grid,
+          null,
+          _react2.default.createElement(
+            _semanticUiReact.Grid.Row,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Grid.Column,
+              { width: 4 },
+              _react2.default.createElement(_MainMenu2.default, { languages: this.state.languages, changeLang: this.changeSelectedLanguage })
+            ),
+            _react2.default.createElement(
+              _semanticUiReact.Grid.Column,
+              { width: 12 },
+              _react2.default.createElement(
+                _semanticUiReact.Button,
+                { onClick: this.getWords },
+                ' Refresh Words '
+              ),
+              _react2.default.createElement(_Words2.default, { languages: this.state.languages, selectedLanguage: this.state.selectedLanguage, words: this.filteredWords(), destroyWord: this.destroyWord, addWord: this.addWord })
+            )
+          )
+        )
       );
     }
   }]);
@@ -26131,36 +26149,32 @@ var AddWord = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddWord.__proto__ || Object.getPrototypeOf(AddWord)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       origin_phrase: "",
-      foreign_language: _this.props.languages[0].id,
+      foreign_language: _this.props.languages[1],
       foreign_phrase: ""
     }, _this.handleSubmit = function (e) {
       e.preventDefault();
-      console.log('this.state', _this.state);
-
       _this.props.addWord({
         origin_language_id: _this.props.selectedLang.id,
         origin_phrase: _this.state.origin_phrase,
-        foreign_language_id: _this.state.foreign_language,
+        foreign_language_id: _this.state.foreign_language.id,
         foreign_phrase: _this.state.foreign_phrase });
     }, _this.changeOriginPhrase = function (e) {
-      console.log('this.state.origin_phrase', _this.state.origin_phrase);
-
       _this.setState({ origin_phrase: e.target.value });
     }, _this.changeForeignPhrase = function (e) {
-      console.log('this.state.foreign_phrase', _this.state.foreign_phrase);
-
       _this.setState({ foreign_phrase: e.target.value });
     }, _this.changeForeignLanguage = function (e) {
-      console.log('this.state.foreign_language', _this.state.foreign_language);
+      var languages = _this.props.languages;
 
-      _this.setState({ foreign_language: e.target.value });
+      var lang = languages.find(function (el) {
+        return el.id === parseInt(e.target.value);
+      });
+      _this.setState({ foreign_language: lang });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(AddWord, [{
     key: 'render',
     value: function render() {
-
       var languageOptions = this.props.languages.map(function (lang) {
         return _react2.default.createElement(
           'option',
@@ -26177,23 +26191,23 @@ var AddWord = function (_React$Component) {
           { onSubmit: this.handleSubmit },
           _react2.default.createElement(_semanticUiReact.Form.Field, {
             onChange: this.changeOriginPhrase,
-            label: 'Origin Phrase',
+            label: 'Phrase in ' + this.props.selectedLang.name,
             control: 'input',
             placeholder: 'Origin Phrase' }),
           _react2.default.createElement(
             _semanticUiReact.Form.Field,
-            { onChange: this.changeForeignLanguage, label: 'Foreign Language', control: 'select' },
+            { onChange: this.changeForeignLanguage, label: 'Foreign Language', control: 'select', defaultValue: this.state.foreign_language.id },
             languageOptions
           ),
           _react2.default.createElement(_semanticUiReact.Form.Field, {
             onChange: this.changeForeignPhrase,
-            label: 'Foreign Phrase',
+            label: 'Phrase in ' + this.state.foreign_language.name,
             control: 'input',
             placeholder: 'Foreign Phrase' }),
           _react2.default.createElement(
             _semanticUiReact.Button,
-            { type: 'submit' },
-            'Submit'
+            { color: 'green', type: 'submit' },
+            'Save'
           )
         )
       );
@@ -26310,6 +26324,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(208);
 
+var _AddWord = __webpack_require__(419);
+
+var _AddWord2 = _interopRequireDefault(_AddWord);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26334,19 +26352,33 @@ var Words = function (_React$Component) {
 
       var listItems = this.props.words.map(function (word) {
         return _react2.default.createElement(
-          'li',
+          _semanticUiReact.Table.Row,
           { key: word.id },
-          word.origin_phrase,
-          ' in ',
-          word.foreign_language,
-          ' ',
-          word.foreign_phrase,
           _react2.default.createElement(
-            _semanticUiReact.Button,
-            { negative: true, onClick: function onClick() {
-                return _this2.props.destroyWord(word);
-              } },
-            'X'
+            _semanticUiReact.Table.Cell,
+            null,
+            word.origin_phrase
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.Cell,
+            null,
+            word.foreign_phrase
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.Cell,
+            null,
+            word.foreign_language_id
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.Cell,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Button,
+              { negative: true, onClick: function onClick() {
+                  return _this2.props.destroyWord(word);
+                } },
+              'X'
+            )
           )
         );
       });
@@ -26355,15 +26387,44 @@ var Words = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(
-          'h3',
-          null,
-          'Words'
+          _semanticUiReact.Table,
+          { celled: true },
+          _react2.default.createElement(
+            _semanticUiReact.Table.Header,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Table.Row,
+              null,
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'In ',
+                this.props.selectedLanguage.name
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Translated'
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Language'
+              ),
+              _react2.default.createElement(_semanticUiReact.Table.HeaderCell, null)
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.Body,
+            null,
+            listItems
+          )
         ),
-        _react2.default.createElement(
-          'ul',
-          null,
-          listItems
-        )
+        _react2.default.createElement(_AddWord2.default, {
+          languages: this.props.languages,
+          selectedLang: this.props.selectedLanguage,
+          addWord: this.props.addWord
+        })
       );
     }
   }]);
