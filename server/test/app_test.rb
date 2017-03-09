@@ -27,4 +27,10 @@ class AppTest < Minitest::Test
     assert response.ok?
     assert_equal 1, Task.where(name: "tastycakes").count
   end
+
+  def test_find_task_by_id
+    tastycakes = Task.create(name: "Get me some tasty cakes")
+    response = get "/tasks/#{tastycakes.id}"
+    assert_equal tastycakes.id,  JSON.parse(response.body)["id"]
+  end
 end
