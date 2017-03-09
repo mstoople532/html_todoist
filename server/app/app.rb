@@ -22,11 +22,19 @@ class App < Sinatra::Base
   end
 
   post "/tasks" do
-    body Task.create(name: params["name"], priority: params["priority"], created_at: Time.now, list_id: nil, completed_at: nil).to_json
+    payload = JSON.parse request.body.read
+    body Task.create(payload).to_json
   end
 
   get "/tasks/:id" do
     body Task.find(params["id"]).to_json
+  end
+
+  patch "/tasks/:id" do
+    payload = JSON.parse(request.body.read)
+    task = Task.find(params["id"])
+    task.update(payload)
+    body task.to_json
   end
 
   # If this file is run directly boot the webserver
