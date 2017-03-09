@@ -9,6 +9,7 @@ class AppTest < Minitest::Test
 
   def teardown
     Task.delete_all
+    List.delete_all
   end
 
   def test_task_exists
@@ -53,5 +54,11 @@ class AppTest < Minitest::Test
     List.create(name: "Activities")
     response = get "/lists"
     assert_equal 2, JSON.parse(response.body).count
+  end
+
+  def test_post_lists
+    response = post "/lists", { name: "Grocery List" }.to_json
+    assert response.ok?
+    assert_equal 1, List.where(name: "Grocery List").count
   end
 end

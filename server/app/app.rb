@@ -47,6 +47,11 @@ class App < Sinatra::Base
     body List.all.to_json
   end
 
+  post "/lists" do
+    payload = JSON.parse request.body.read
+    body List.create(payload).to_json
+  end
+
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end
