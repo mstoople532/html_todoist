@@ -7,4 +7,4 @@ require "json"
 require "pry"
 
 require_relative "../db/connection"
-require_relative "word"
+require_relative "task"

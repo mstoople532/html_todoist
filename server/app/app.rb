@@ -16,9 +16,10 @@ class App < Sinatra::Base
       uptime: Time.now - BOOT_TIME
     }.to_json
   end
-  # #################### YOUR ENDPOINTS BELOW ###############
 
-  # #################### YOUR ENDPOINTS ABOVE ###############
+  get "/tasks" do
+    body Task.all.to_json
+  end
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end
