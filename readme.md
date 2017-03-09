@@ -1,8 +1,5 @@
-# Cross Class Repo
-This repo is designed to allow cross class collaboration. Each discipline has a folder
-`server` for backend and `client` for the frontend.
-
-### Frontenders
+# Client and Server repo
+This is two apps in one. Your Ruby client in the client folder and the server in the server folder. Be wary of where you are.
 
 ## Setup
 
