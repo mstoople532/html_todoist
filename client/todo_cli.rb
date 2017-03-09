@@ -1,4 +1,4 @@
-# Feel free to modify this class but do not rename it.
+require_relative "../server/db/migrations/1_create_tasks_table"
 class TodoCli
   attr_reader :args
   def initialize(args)
@@ -6,6 +6,9 @@ class TodoCli
 
     # Extract the "subcommand"
     case @args.first
+    when "install"
+      CreateTasksTable.migrate(:up)
+      CreateListsTable.migrate(:up)
     when "create_task"
       create_task
     when "create_list"

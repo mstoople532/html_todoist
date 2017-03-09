@@ -12,3 +12,10 @@ require "minitest/focus"
 require "rack/test"
 
 require_relative "../app/app"
+require_relative "../db/migrations/1_create_tasks_table"
+
+begin
+  CreateTasksTable.migrate(:down)
+rescue ActiveRecord::StatementInvalid
+end
+CreateTasksTable.migrate(:up)

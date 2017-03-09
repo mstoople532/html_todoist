@@ -1,4 +1,3 @@
-# This file is testing the Client
 require_relative "test_helper"
 
 class TodoCliTest < Minitest::Test
@@ -8,4 +7,9 @@ class TodoCliTest < Minitest::Test
       TodoCli.new(["new", "i am a task"])
     end
   end
+
+  def test_task_exists
+    assert Task
+  end
+
 end
