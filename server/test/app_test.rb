@@ -23,7 +23,7 @@ class AppTest < Minitest::Test
   end
 
   def test_post_tasks
-    response = post "/tasks", {name: "tastycakes", priority: "high"}.to_json
+    response = post "/tasks", { name: "tastycakes", priority: "high" }.to_json
     assert response.ok?
     assert_equal 1, Task.where(name: "tastycakes").count
   end
@@ -38,5 +38,13 @@ class AppTest < Minitest::Test
     tastycakes = Task.create(name: "Get me some tasty cakes")
     response = patch "/tasks/#{tastycakes.id}", { name: "Yummy Time", priority: "URGENT!" }.to_json
     assert_equal "Yummy Time", JSON.parse(response.body)["name"]
+  end
+
+  def test_delete_task
+    tastycakes = Task.create(name: "Get me some tasty cakes")
+    delete "/tasks/#{tastycakes.id}"
+    assert_raises ActiveRecord::RecordNotFound do
+      Task.find(tastycakes.id)
+    end
   end
 end

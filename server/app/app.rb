@@ -37,6 +37,12 @@ class App < Sinatra::Base
     body task.to_json
   end
 
+  delete "/tasks/:id" do
+    task = Task.find(params["id"])
+    task.destroy
+    body task.to_json
+  end
+
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end

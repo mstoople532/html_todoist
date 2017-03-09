@@ -14,6 +14,7 @@ require "rack/test"
 require_relative "../app/app"
 require_relative "../db/migrations/1_create_tasks_table"
 
+# rubocop:disable Lint/HandleExceptions
 begin
   CreateTasksTable.migrate(:down)
 rescue ActiveRecord::StatementInvalid

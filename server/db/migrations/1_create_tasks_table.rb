@@ -1,7 +1,6 @@
 require "active_record"
 
 class CreateTasksTable < ActiveRecord::Migration[5.0]
-
   def change
     create_table :tasks do |t|
       t.string :name
@@ -14,7 +13,6 @@ class CreateTasksTable < ActiveRecord::Migration[5.0]
 end
 
 class CreateListsTable < ActiveRecord::Migration[5.0]
-
   def change
     create_table :lists do |t|
       t.string :name
