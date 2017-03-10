@@ -71,7 +71,16 @@ class AppTest < Minitest::Test
   def test_add_task_to_list
     food = List.create(name: "Food")
     tastycakes = Task.create(name: "Get me some tasty cakes")
-    response = get "/lists/#{food.id}/#{tastycakes.id}"
+    response = get "/lists/#{food.id}/tasks/#{tastycakes.id}"
     assert_equal food.id, JSON.parse(response.body)["list_id"]
+  end
+
+  def test_print_list
+    food = List.create(name: "Food")
+    Task.create(name: "Get me some tasty cakes", list_id: food.id)
+    Task.create(name: "With lots of cheese", list_id: food.id)
+    response = get "/lists/#{food.id}/tasks"
+    assert response.ok?
+    assert_equal food.id, JSON.parse(response.body)[0]["list_id"]
   end
 end
