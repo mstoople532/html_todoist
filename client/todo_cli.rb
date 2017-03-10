@@ -1,4 +1,5 @@
 require_relative "../server/db/migrations/1_create_tasks_table"
+
 class TodoCli
   attr_reader :args
   def initialize(args)
@@ -19,7 +20,7 @@ class TodoCli
   end
 
   def create_task
-    # Do work to create a task here.
+    new_task = Task.create(name: @args.third, priority: args.fourth)
   end
 
   def create_list
