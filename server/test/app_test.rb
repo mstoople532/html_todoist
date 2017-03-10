@@ -74,4 +74,10 @@ class AppTest < Minitest::Test
     response = get "/lists/#{food.id}/#{tastycakes.id}"
     assert_equal food.id, JSON.parse(response.body)["list_id"]
   end
+
+  def test_patch_list
+    food = List.create(name: "Food")
+    response = patch "/lists/#{food.id}", { name: "Liquor" }.to_json
+    assert_equal "Liquor", JSON.parse(response.body)["name"]
+  end
 end

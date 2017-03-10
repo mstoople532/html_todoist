@@ -62,6 +62,12 @@ class App < Sinatra::Base
     body task_to_update.to_json
   end
 
+  patch "/lists/:id" do
+    payload = JSON.parse(request.body.read)
+    list = List.find(params["id"])
+    list.update(payload)
+    body list.to_json
+  end
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end
