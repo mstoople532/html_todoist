@@ -56,10 +56,27 @@ class App < Sinatra::Base
     body List.find(params["id"]).to_json
   end
 
-  get "/lists/:list_id/:task_id" do
+  get "/lists/:list_id/tasks/:task_id" do
     task_to_update = Task.find(params["task_id"])
     task_to_update.list_id = params["list_id"].to_i
     body task_to_update.to_json
+  end
+
+  get "/lists/:list_id/tasks" do
+    body Task.where(list_id: params["list_id"]).to_json
+  end
+
+  patch "/lists/:id" do
+    payload = JSON.parse(request.body.read)
+    list = List.find(params["id"])
+    list.update(payload)
+    body list.to_json
+  end
+
+  delete "/lists/:id" do
+    list = List.find(params["id"])
+    list.destroy
+    body list.to_json
   end
 
   # If this file is run directly boot the webserver
