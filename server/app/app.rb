@@ -62,6 +62,10 @@ class App < Sinatra::Base
     body task_to_update.to_json
   end
 
+  get "/lists/:list_id/tasks" do
+    body Task.where(list_id: params["list_id"]).to_json
+  end
+
   patch "/lists/:id" do
     payload = JSON.parse(request.body.read)
     list = List.find(params["id"])
