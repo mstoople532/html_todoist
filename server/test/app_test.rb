@@ -75,11 +75,11 @@ class AppTest < Minitest::Test
     assert_equal food.id, JSON.parse(response.body)["list_id"]
   end
 
-
   def test_patch_list
     food = List.create(name: "Food")
     response = patch "/lists/#{food.id}", { name: "Liquor" }.to_json
     assert_equal "Liquor", JSON.parse(response.body)["name"]
+  end
 
   def test_print_list
     food = List.create(name: "Food")
@@ -88,5 +88,13 @@ class AppTest < Minitest::Test
     response = get "/lists/#{food.id}/tasks"
     assert response.ok?
     assert_equal food.id, JSON.parse(response.body)[0]["list_id"]
+  end
+
+  def test_delete_list
+    food = List.create(name: "Food")
+    delete "/lists/#{food.id}"
+    assert_raises ActiveRecord::RecordNotFound do
+      List.find(food.id)
+    end
   end
 end
