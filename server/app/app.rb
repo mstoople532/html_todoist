@@ -72,6 +72,12 @@ class App < Sinatra::Base
     list.update(payload)
     body list.to_json
   end
+
+  delete "/lists/:id" do
+    list = List.find(params["id"])
+    list.destroy
+    body list.to_json
+  end
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end
