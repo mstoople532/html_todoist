@@ -1,25 +1,39 @@
-# Client and Server repo
-This is two apps in one. Your Ruby client in the client folder and the server in the server folder. Be wary of where you are.
+# Todo List with API -Server
 
-## Setup
+This program allows you to create tasks and lists to organize what you need to do.
 
-### First and whenever your backender ask you to.
-1. bundler
-1. rake db:migrate
+## Get Tasks
+```ruby
+get "/tasks"
+```
+Use this feature to print out all of the tasks.
 
-### Start the server (from server folder)
-1. rackup
+## Make new Tasks
+```ruby
+post "/tasks"
+```
+This feature will use information provided by the client to make a new task.
 
-### Backenders
+## Search Tasks
+```ruby
+get "/tasks/:id"
+```
+This feature will take an id from the client and return the requested task.
 
-# New Things
-  1. Database config is located at
-  2. Migrations via `rake db:migrate`
-  3. Torch db via `rake db:drop`
+## Edit Task
+```ruby
+patch "/tasks/:id"
+```
+This feature will take input from a user and update the requested task with new information.
 
-## Deploying to heroku
+## Get Lists
+```ruby
+get "/lists"
+```
+This feature will print out all of the tasks.
 
-1. Ensure you have heroku toolbelt
-2. Run `heroku create`
-3. Run `heroku addons:create heroku-postgresql:hobby-dev` to add a postgres DB server
-3. Run `heroku run "cd server; rake db:migrate"` to migrate your servers database
+## Edit Lists
+```ruby
+get "/lists/:list_id/:task_id"
+```
+This feature will take a requested task and associate it with a requested list by adding the list id to the clients schema.

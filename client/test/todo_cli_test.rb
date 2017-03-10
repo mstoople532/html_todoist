@@ -35,4 +35,11 @@ class TodoCliTest < Minitest::Test
     laundry = Task.create(name: "Laundry")
     assert_in_delta Time.now, laundry.complete, 1
   end
+
+  def test_display_all
+    Task.create(name: "Laundry")
+    Task.create(name: "Grocery Store")
+    TodoCli.new("display_all")
+    assert_equal 2, Task.display_all.count
+  end
 end

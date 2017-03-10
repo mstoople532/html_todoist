@@ -18,6 +18,8 @@ class TodoCli
       add_task
     when "complete"
       complete
+    when "display_all"
+      list_tasks
     else
       usage
     end
@@ -41,7 +43,11 @@ class TodoCli
     task.complete
   end
 
+  def list_tasks
+    output = Task.display_all
+  end
+
   def usage
-    # Tell a user how to use this tool.
+    "Please choose between from create_task, create_list, add_task, complete, or display_all."
   end
 end
