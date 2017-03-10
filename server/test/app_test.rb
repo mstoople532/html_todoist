@@ -61,4 +61,17 @@ class AppTest < Minitest::Test
     assert response.ok?
     assert_equal 1, List.where(name: "Grocery List").count
   end
+
+  def test_get_list_by_id
+    food = List.create(name: "Food")
+    response = get "/lists/#{food.id}"
+    assert_equal food.id, JSON.parse(response.body)["id"]
+  end
+
+  def test_add_task_to_list
+    food = List.create(name: "Food")
+    tastycakes = Task.create(name: "Get me some tasty cakes")
+    response = get "/lists/#{food.id}/#{tastycakes.id}"
+    assert_equal food.id, JSON.parse(response.body)["list_id"]
+  end
 end

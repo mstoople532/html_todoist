@@ -52,6 +52,16 @@ class App < Sinatra::Base
     body List.create(payload).to_json
   end
 
+  get "/lists/:id" do
+    body List.find(params["id"]).to_json
+  end
+
+  get "/lists/:list_id/:task_id" do
+    task_to_update = Task.find(params["task_id"])
+    task_to_update.list_id = params["list_id"].to_i
+    body task_to_update.to_json
+  end
+
   # If this file is run directly boot the webserver
   run! if app_file == $PROGRAM_NAME
 end
