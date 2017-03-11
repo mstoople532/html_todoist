@@ -1,4 +1,4 @@
-require_relative "../server/db/migrations/1_create_tasks_table"
+require "httparty"
 
 class TodoCli
   attr_reader :args
@@ -7,9 +7,6 @@ class TodoCli
 
     # Extract the "subcommand"
     case @args.first
-    when "install"
-      CreateTasksTable.migrate(:up)
-      CreateListsTable.migrate(:up)
     when "create_task"
       create_task
     when "create_list"
@@ -42,9 +39,9 @@ class TodoCli
     task = Task.where(name: @args.second).first
     task.complete
   end
-
+  
   def list_tasks
-    output = Task.display_all
+    Development.new.get_tasks
   end
 
   def usage
