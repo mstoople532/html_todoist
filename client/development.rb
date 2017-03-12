@@ -13,4 +13,12 @@ class Development
   def add_task_to_list(list_id, task_id)
     HTTParty.get("HTTP://localhost:4567/lists/#{list_id}/tasks/#{task_id}")
   end
+
+  def create_new_task
+    HTTParty.post("HTTP://localhost:4567/tasks/")
+  end
+
+  def create_new_list
+    HTTParty.post("HTTP://localhost:4567/lists/")
+  end
 end
