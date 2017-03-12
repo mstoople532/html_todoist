@@ -1,4 +1,5 @@
 require_relative "test_helper"
+require "json"
 
 class TodoCliTest < Minitest::Test
 
@@ -25,21 +26,17 @@ class TodoCliTest < Minitest::Test
   end
 
   def test_add_task_to_list
-    Task.create(name: "Laundry")
-    List.create(name: "Weekend")
-    TodoCli.new(["add_task", "Weekend", "Laundry"])
-    assert_equal 1, List.where(name: "Weekend").count
+      stub_request(:get, "http://localhost:4567/lists/1/tasks/1").to_return(body: File.read("./stubbed_requests/list_tasks.json"), headers: { "Content-Type" => "application/json" })
+      Development.new.add_task_to_list("1", "1")
   end
 
   def test_complete
-    laundry = Task.create(name: "Laundry")
-    assert_in_delta Time.now, laundry.complete, 1
+    stub_request(:patch, "http://localhost:4567/tasks/1").to_return(body: File.read("./stubbed_requests/complete_task.json"), headers: { "Content-Type" => "application/json" })
+    assert_equal 1, Development.new.complete_tasks("1")["id"]
   end
 
   def test_display_all
-    Task.create(name: "Laundry")
-    Task.create(name: "Grocery Store")
-    TodoCli.new("display_all")
-    assert_equal 2, Task.display_all.count
+    stub_request(:get, "http://localhost:4567/tasks").to_return(body: File.read("./stubbed_requests/get_tasks.json"), headers: { "Content-Type" => "application/json" })
+    assert_equal 1, Development.new.get_tasks["id"]
   end
 end

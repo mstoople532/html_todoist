@@ -97,4 +97,11 @@ class AppTest < Minitest::Test
       List.find(food.id)
     end
   end
+
+  def test_list_complete_tasks
+    Task.create(name: "Get me some tasty cakes")
+    Task.create(name: "With lots of cheese", completed_at: Time.now)
+    response = get "/tasks/complete"
+    assert_equal 1, JSON.parse(response.body).count
+  end
 end

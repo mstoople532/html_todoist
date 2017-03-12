@@ -10,5 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_170_308_135_304) do
+ActiveRecord::Schema.define(version: 1) do
+
+  create_table "tasks", force: :cascade do |t|
+    t.string   "name"
+    t.string   "priority"
+    t.datetime "completed_at"
+    t.integer  "list_id"
+    t.datetime "created_at"
+  end
+
 end

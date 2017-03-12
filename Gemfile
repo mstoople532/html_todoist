@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "activerecord"
+gem "httparty"
 gem "json"
 gem "pry"
 gem "puma" # Replacement for WEBrick

@@ -26,6 +26,16 @@ class App < Sinatra::Base
     body Task.create(payload).to_json
   end
 
+  get "/tasks/complete" do
+    completed_tasks = Task.all
+    to_be_response = completed_tasks.select do |el|
+      if el.completed_at
+        true
+      end
+    end
+    body to_be_response.to_json
+  end
+
   get "/tasks/:id" do
     body Task.find(params["id"]).to_json
   end
