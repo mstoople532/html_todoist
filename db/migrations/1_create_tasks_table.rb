@@ -11,11 +11,3 @@ class CreateTasksTable < ActiveRecord::Migration[5.0]
     end
   end
 end
-
-class CreateListsTable < ActiveRecord::Migration[5.0]
-  def change
-    create_table :lists do |t|
-      t.string :name
-    end
-  end
-end

@@ -3,27 +3,24 @@ require_relative "app_helper"
 class App < Sinatra::Base
   BOOT_TIME = Time.now
 
-  # This ensures that we always return the content-type application/json
-  before do
-    content_type "application/json"
-  end
-
   # You can delete this route but you should nest your endpoints under /api
   get "/" do
-    {
-      msg: "The server is running",
-      msg_at: Time.now,
-      uptime: Time.now - BOOT_TIME
-    }.to_json
+    erb :"home.html"
   end
 
   get "/tasks" do
-    body Task.all.to_json
+    @tasks = Task.all
+    erb :"tasks.html"
+  end
+
+  get "/tasks/new" do
+    erb :"new_task.html"
   end
 
   post "/tasks" do
-    payload = JSON.parse request.body.read
-    body Task.create(payload).to_json
+    Task.create(params)
+    redirect to("/tasks")
+    erb :"new_task.html"
   end
 
   get "/tasks/complete" do
